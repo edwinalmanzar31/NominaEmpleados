@@ -1,0 +1,115 @@
+﻿@model NominaEmpleados.Models.NominaVM;
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h5 class="display-5">Nómina de empleados</h5>
+    <p>Clase Taller de programación 3 - Unicaribe</p>
+</div>
+
+@if (Model.Error)
+{
+    @Html.Partial("_mensajeError")
+    ;
+}
+
+<div class="card">
+    <div class="card-header">
+        <h5>Lista de empleados</h5>
+    </div>
+    <div class="card-body">
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#ModalAgregar">
+            Agregar a nómina
+        </button>
+
+        <hr />
+        <div style="overflow-x: auto;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Precio Horas</th>
+                        <th>Cantidad Horas</th>
+                        <th>Monto Ganado</th>
+                        <th>Incentivos</th>
+                        <th>Total Ganado</th>
+                        <th>ISR</th>
+                        <th>Avances</th>
+                        <th>Total Deducciones</th>
+                        <th>Total Recibir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Listado != null)
+                    {
+
+                        @foreach (var item in Model.Listado)
+                        {
+                            <tr>
+                                <td>@item.Codigo</td>
+                                <td>@item.Nombre</td>
+                                <td>@item.Apellido</td>
+                                <td>@item.PrecioHoras.ToString("C")</td>
+                                <td>@item.CantidadHoras</td>
+                                <td>@item.MontoGanado.ToString("C")</td>
+                                <td>@item.Incentivos.ToString("C")</td>
+                                <td>@item.TotalGanado.ToString("C")</td>
+                                <td>@item.ISR.ToString("C")</td>
+                                <td>@item.Avances.ToString("C")</td>
+                                <td>@item.TotalDeducciones.ToString("C")</td>
+                                <td>@item.TotalRecibir.ToString("C")</td>
+                            </tr>
+                        }
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalAgregar" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Agregar empleado</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="CalcularNomina" asp-controller="Home" method="post">
+                <div class="modal-body">
+
+                    <!--Formulario para agregar-->
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="oNomina.Codigo">Código</label>
+                        <input class="form-control form-control-sm" asp-for="oNomina.Codigo" type="number" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="oNomina.Nombre">Nombre</label>
+                        <input class="form-control form-control-sm" asp-for="oNomina.Nombre" type="text" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="oNomina.Apellido">Apellido</label>
+                        <input class="form-control form-control-sm" asp-for="oNomina.Apellido" type="text" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="oNomina.PrecioHoras">Precio por horas</label>
+                        <input class="form-control form-control-sm" asp-for="oNomina.PrecioHoras" type="number" min="0.00" max="10000.00" step="0.5" required />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label" asp-for="oNomina.CantidadHoras">Cantidad de horas</label>
+                        <input class="form-control form-control-sm" asp-for="oNomina.CantidadHoras" type="number" required />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
